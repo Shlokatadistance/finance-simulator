@@ -1,14 +1,13 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
+#include "lib/AbstractClasses.h"
 using std::string;
 
-class AbstractFinancialStatements{
-    virtual double returnNetWorth() = 0;
-};
-
-
 class FinancialSheet : AbstractFinancialStatements{
+    private:
+        std::vector<int> InvestmentProducts; 
     public:
         string Name;
         string Occupation;
@@ -29,6 +28,7 @@ class FinancialSheet : AbstractFinancialStatements{
             NetWorth = Salary - NetLiabilities;
             return NetWorth;
         }
+
 };
 
 
