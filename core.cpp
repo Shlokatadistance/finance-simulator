@@ -3,7 +3,52 @@
 #include <iomanip>
 #include <vector>
 #include "lib/AbstractClasses.h"
+#include "lib/FinancialProducts.h"
 using std::string;
+
+class EquityPortfolio : AbstractInvestmentPortfolio{
+    public:
+        Equity Product;
+        EquityPortfolio(string ticker,double quantity,double execution_price){
+            Product.ticker = ticker;
+            Product.execution_price = execution_price;
+            Product.quantity = quantity;
+        }
+
+        double current_valuation(double last_closing_px){
+            double current_value = Product.quantity * (last_closing_px - Product.execution_price);
+            return current_value;
+        }
+};
+
+class DerivativesPortfolio : AbstractInvestmentPortfolio{
+    public:
+        DerivativesContract Product;
+        DerivativesPortfolio(string ticker, double strike_price,int contract_size,double time_to_expire ){
+            Product.ticker = ticker;
+            Product.strike_price = strike_price;
+            Product.time_to_expiry = time_to_expire;
+            Product.contract_size = contract_size;
+        }
+
+        double current_valuation(double last_closing_px){
+            // Options have an intrinsic value 
+            if (last_closing_px > Product.strike_price){
+                return -1.0;
+            }else if (last_closing_px == Product.strike_price)
+            {
+                return 0.0;
+            }else{
+                return last_closing_px - Product.strike_price;
+            }
+
+        }
+    };
+
+class InvestmentPortfolio : AbstractInvestmentPortfolio {
+    public:
+        InvestmentPortfolio( );
+};
 
 class FinancialSheet : AbstractFinancialStatements{
     private:
